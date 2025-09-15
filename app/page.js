@@ -5,7 +5,7 @@ export default function Home() {
   const heading = "CPRG 306: Web Development 2 - Assignments";
   return(
     <>
-      <h1>CPRG 306: Web Development 2 - Assignments</h1>
+      <h1>{heading}</h1>
       <Link href="week-2">week-2</Link>
     </>
   );
