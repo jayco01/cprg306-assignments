@@ -65,9 +65,14 @@ export default function ItemList() {
 
   return (
     <ul>
-      {items.map((item) => {
-        <Item name={item.name} quantity={item.quantity} category={item.category}></Item>
-      })}
+      {items.map((item) => (
+        <Item
+          key={item.name}
+          name={item.name}
+          quantity={item.quantity}
+          category={item.category}>
+        </Item>
+      ))}
     </ul>
   );
 }
