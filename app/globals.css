@@ -3,12 +3,6 @@
 :root {
   --background: #3A4D39;
   --foreground: #ECE3CE;
-
-  /* Custom variables */
-  --color-custom-darker-green: #3A4D39;
-  --color-custom-dark-green: #4F6F52;
-  --color-custom-green: #739072;
-  --color-custom-offWhite: #ECE3CE;
 }
 
 @theme inline {
@@ -16,6 +10,40 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+
+@theme {
+  /* Custom variables */
+
+  /*Colors */
+  --color-custom-darker-green: #3A4D39;
+  --color-custom-dark-green: #4F6F52;
+  --color-custom-green: #739072;
+  --color-custom-offWhite: #ECE3CE;
+
+  /*Typography*/
+  --text-font-size-fluid-0: clamp(.75rem, 2vw, 1rem);
+  --text-font-size-fluid-1: clamp(1rem, 4vw, 1.5rem);
+  --text-font-size-fluid-2: clamp(1.5rem, 6vw, 2.5rem);
+  --text-font-size-fluid-3: clamp(2rem, 9vw, 3.5rem);
+}
+
+@layer base {
+  h1 {
+    @apply text-font-size-fluid-3;
+  }
+
+  h2 {
+    @apply text-font-size-fluid-2;
+  }
+
+  h3 {
+    @apply text-font-size-fluid-1;
+  }
+
+  p {
+    @apply text-font-size-fluid-0;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
