@@ -64,7 +64,7 @@ export default function ItemList() {
   ];
 
   return (
-    <ul>
+    <ul className="font-semibold">
       {items.map((item) => (
         <Item
           key={item.name}
