@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,11 +20,35 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-    <body
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    >
-    {children}
-    </body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+      <nav className="absolute top-0 left-0 w-full p-4">
+        <ul className="flex flex-row gap-4">
+          <li>
+            <Link href="/" className="text-font-size-fluid-0 hover:underline font-bold">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link href="/week-2" className="text-font-size-fluid-0 hover:underline font-bold">
+              Week 2
+            </Link>
+          </li>
+          <li>
+            <Link href="/week-3" className="text-font-size-fluid-0 hover:underline font-bold">
+              Week 3
+            </Link>
+          </li>
+          <li>
+            <Link href="/week-4" className="text-font-size-fluid-0 hover:underline font-bold">
+              Week 4
+            </Link>
+          </li>
+        </ul>
+      </nav>
+        {children}
+      </body>
     </html>
   );
 }
