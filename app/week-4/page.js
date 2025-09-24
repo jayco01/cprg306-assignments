@@ -9,3 +9,14 @@ export default function Page() {
     <NewItem/>
   )
 }
+
+const increment = (quantity) => {
+  if (quantity >= 20) {
+    setQuantity(quantity + 1);
+  }
+}
+const decrement = (quantity) => {
+  if (quantity <= 1) {
+    setQuantity(quantity - 1);
+  }
+}
