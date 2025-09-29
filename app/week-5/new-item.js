@@ -96,13 +96,17 @@ export default function NewItem() {
           <button
             className={`${btnStyle} ${(quantity === maxQuantity ? "bg-custom-green" : "bg-transparent")} `}
             disabled={quantity > maxQuantity}
-            onClick={() => increment(quantity)}>
+            onClick={() => increment(quantity)}
+            type="button"
+          >
             +
           </button>
           <button
             className={`${btnStyle} ${(quantity === minQuantity ? "bg-custom-green" : "bg-transparent")} `}
             disabled={quantity < minQuantity}
-            onClick={() => decrement(quantity)}>
+            onClick={() => decrement(quantity)}
+            type="button"
+          >
             -
           </button>
         </div>
