@@ -63,44 +63,77 @@ export default function NewItem() {
     setHasError(false);
   }
 
+  const categories = [
+    "Produce", "Dairy", "Bakery", "Meat", "Frozen Foods",
+    "Canned Goods", "Dry Goods", "Beverages", "Snacks",
+    "Household", "Other"
+  ]
+
   return (
-    <section className="flex justify-center items-center flex-col gap-2 bg-custom-dark-green p-4 rounded-lg">
-      <h2>
-        Quantity:
-        <span>{getQuantityWithConstraint()}</span>
-      </h2>
-      <div className="flex justify-around items-center flex-row  min-w-xl w-full gap-4">
+    <form
+      onSubmit={handleSubmit}
+      className="flex justify-center items-center flex-col gap-2 bg-custom-dark-green p-4 rounded-lg"
+    >
 
-        <button
-          className={`${btnStyle} ${(quantity === maxQuantity ? "bg-custom-green":"bg-transparent") } `}
-          disabled={ quantity > maxQuantity }
-          onClick={() => increment(quantity)}>
-          +
-        </button>
-
-        <button
-          className={`${btnStyle} ${(quantity === minQuantity ? "bg-custom-green":"bg-transparent") } `}
-          disabled={ quantity < minQuantity }
-          onClick={() => decrement(quantity)}>
-          -
-        </button>
-
+      <div>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={name}
+            onChange={event => setName(event.target.value)}
+            required
+          />
+        </label>
       </div>
 
       <div>
-
-        {hasError ? (
-          <p className="text-red-400 font-bold">
-            {`Quantity must be between ${minQuantity} and ${maxQuantity}`}
-          </p>
-        ) : (
-          <p className="text-custom-offWhite font-bold">
-            Please select a quantity
-          </p>
-        )}
-
+        <h2>
+          Quantity:
+          <span>{getQuantityWithConstraint()}</span>
+        </h2>
+        <div className="flex justify-around items-center flex-row  min-w-xl w-full gap-4">
+          <button
+            className={`${btnStyle} ${(quantity === maxQuantity ? "bg-custom-green" : "bg-transparent")} `}
+            disabled={quantity > maxQuantity}
+            onClick={() => increment(quantity)}>
+            +
+          </button>
+          <button
+            className={`${btnStyle} ${(quantity === minQuantity ? "bg-custom-green" : "bg-transparent")} `}
+            disabled={quantity < minQuantity}
+            onClick={() => decrement(quantity)}>
+            -
+          </button>
+        </div>
+        <div>
+          {hasError ? (
+            <p className="text-red-400 font-bold">
+              {`Quantity must be between ${minQuantity} and ${maxQuantity}`}
+            </p>
+          ) : (
+            <p className="text-custom-offWhite font-bold">
+              Please select a quantity
+            </p>
+          )}
+        </div>
       </div>
-    </section>
+
+      <select>
+        {categories.map((category) => (
+          <option key={category} value={category}>{category}</option>
+        ))}
+      </select>
+
+      <button
+        type="submit"
+        onClick={handleSubmit}
+      >
+        Submit
+
+      </button>
+
+    </form>
   )
 }
 
