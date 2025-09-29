@@ -45,7 +45,23 @@ export default function NewItem() {
     }
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
+    const item = {
+      name: name,
+      category: category,
+      quantity: getQuantityWithConstraint()
+    }
+
+    console.log(`Item name: ${item.name}, Catergory: ${item.category}, Quantity: ${item.quantity}`);
+    alert(`Item name: ${item.name}, Catergory: ${item.category}, Quantity: ${item.quantity}`);
+
+    setName("");
+    setCategory("Produce");
+    setQuantity(1);
+    setHasError(false);
+  }
 
   return (
     <section className="flex justify-center items-center flex-col gap-2 bg-custom-dark-green p-4 rounded-lg">
