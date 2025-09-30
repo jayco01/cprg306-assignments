@@ -11,7 +11,7 @@ export default function NewItem() {
   const maxQuantity = 20;
   const minQuantity = 1;
 
-  const btnStyle = `flex-1 font-extrabold text-font-size-fluid-2 cursor-pointer border-2 border-custom-offWhite rounded-lg m-4`;
+  const btnStyle = `flex-1 font-extrabold text-font-size-fluid-1 cursor-pointer border-2 border-custom-offWhite rounded-lg txt-start max-w-1/4`;
 
   const increment = (quantity) => {
     console.log(quantity + " test increment");
@@ -69,32 +69,46 @@ export default function NewItem() {
     "Household", "Other"
   ]
 
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex justify-center items-center flex-col gap-2 bg-custom-dark-green p-4 rounded-lg"
+      className="flex justify-center items-center flex-col gap-4 bg-custom-darker-green p-8 rounded-lg"
     >
 
-      <div>
-        <label>
-          Name:
-          <input
-            type="text"
-            value={name}
-            onChange={event => setName(event.target.value)}
-            required
-          />
-        </label>
+      <div className="flex justify-between items-center flex-row w-full gap-2 max-h-12">
+        <div className="flex-1 flex justify-start items-center flex-row gap-2 h-full">
+          <h3>Name:</h3>
+          <label htmlFor="name" className="text-font-size-fluid-1">
+            <input
+              id="item-name"
+              type="text"
+              value={name}
+              onChange={event => setName(event.target.value)}
+              className="text-font-size-fluid-1 max-w-3/4 bg-custom-dark-green  border-2 border-transparent  focus:border-custom-offWhite rounded-lg p-2 h-full focus:shadow-custom-dark-green focus:shadow-md"
+              required
+            />
+          </label>
+        </div>
+
+        <select className="flex-1 text-font-size-fluid-1 bg-custom-dark-green p-2 rounded-lg">
+          {categories.map((category) => (
+            <option key={category} value={category} className="text-font-size-fluid-1">{category}</option>
+          ))}
+        </select>
       </div>
 
-      <div>
-        <h2>
+
+      <div className="flex flex-row w-full gap-2">
+        <h3 className="text-start">
           Quantity:
           <span>{getQuantityWithConstraint()}</span>
-        </h2>
-        <div className="flex justify-around items-center flex-row  min-w-xl w-full gap-4">
+        </h3>
+
+        {/*<div className="lex flex-row gap-2">*/}
+
           <button
-            className={`${btnStyle} ${(quantity === maxQuantity ? "bg-custom-green" : "bg-transparent")} `}
+            className={`${btnStyle} ${(quantity === maxQuantity ? "bg-custom-green" : "bg-transparent")}`}
             disabled={quantity > maxQuantity}
             onClick={() => increment(quantity)}
             type="button"
@@ -109,32 +123,28 @@ export default function NewItem() {
           >
             -
           </button>
-        </div>
-        <div>
-          {hasError ? (
-            <p className="text-red-400 font-bold">
-              {`Quantity must be between ${minQuantity} and ${maxQuantity}`}
-            </p>
-          ) : (
-            <p className="text-custom-offWhite font-bold">
-              Please select a quantity
-            </p>
-          )}
-        </div>
+        {/*</div>*/}
+        
       </div>
 
-      <select>
-        {categories.map((category) => (
-          <option key={category} value={category}>{category}</option>
-        ))}
-      </select>
+      <div>
+        {hasError ? (
+          <p className="text-red-400 font-bold">
+            {`Quantity must be between ${minQuantity} and ${maxQuantity}`}
+          </p>
+        ) : (
+          <p className="text-custom-offWhite font-bold">
+            Please select a quantity
+          </p>
+        )}
+      </div>
 
       <button
         type="submit"
         onClick={handleSubmit}
+        className="self-end text-font-size-fluid-1 cursor-pointer border-2 border-custom-offWhite rounded-lg p-2 hover:bg-custom-darkest-green"
       >
         Submit
-
       </button>
 
     </form>
