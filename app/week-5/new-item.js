@@ -11,7 +11,7 @@ export default function NewItem() {
   const maxQuantity = 20;
   const minQuantity = 1;
 
-  const btnStyle = `flex-1 font-extrabold text-font-size-fluid-1 cursor-pointer border-2 border-custom-offWhite rounded-lg txt-start max-w-1/4`;
+  const btnStyle = `flex-1 font-extrabold text-font-size-fluid-1 cursor-pointer border-2 border-custom-offWhite rounded-lg txt-start max-w-8`;
 
   const increment = (quantity) => {
     console.log(quantity + " test increment");
@@ -99,13 +99,13 @@ export default function NewItem() {
       </div>
 
 
-      <div className="flex flex-row w-full gap-2">
+      <div className="flex flex-row w-full gap-4">
         <h3 className="text-start">
           Quantity:
-          <span>{getQuantityWithConstraint()}</span>
+
         </h3>
 
-        {/*<div className="lex flex-row gap-2">*/}
+        <div className="flex items-center flex-row w-full gap-2">
 
           <button
             className={`${btnStyle} ${(quantity === maxQuantity ? "bg-custom-green" : "bg-transparent")}`}
@@ -115,6 +115,9 @@ export default function NewItem() {
           >
             +
           </button>
+
+          <section>{getQuantityWithConstraint()}</section>
+
           <button
             className={`${btnStyle} ${(quantity === minQuantity ? "bg-custom-green" : "bg-transparent")} `}
             disabled={quantity < minQuantity}
@@ -123,7 +126,8 @@ export default function NewItem() {
           >
             -
           </button>
-        {/*</div>*/}
+
+        </div>
         
       </div>
 
