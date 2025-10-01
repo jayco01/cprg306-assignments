@@ -73,7 +73,7 @@ export default function NewItem() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex justify-center items-center flex-col gap-4 bg-custom-darker-green p-8 rounded-lg"
+      className="flex items-center flex-col gap-4 bg-custom-darker-green p-8 rounded-lg"
     >
 
       <div className="flex justify-between items-center flex-row w-full gap-2 max-h-12">
@@ -91,65 +91,68 @@ export default function NewItem() {
           </label>
         </div>
 
-        <select className="flex-1 text-font-size-fluid-1 bg-custom-dark-green p-2 rounded-lg">
-          {categories.map((category) => (
-            <option key={category} value={category} className="text-font-size-fluid-1">{category}</option>
-          ))}
-        </select>
+        <div>
+          <span className="text-font-size-fluid-1">Category: </span>
+          <select className="flex-1 text-font-size-fluid-1 bg-custom-dark-green p-2 rounded-lg">
+            {categories.map((category) => (
+              <option key={category} value={category} className="text-font-size-fluid-1"> {category}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
 
-      <div className="flex flex-row w-full gap-4">
-        <h3 className="text-start">
+      <div className="flex flex-row w-full justify-between">
+        <div className="flex flex-row w-full gap-4">
+          <h3 className="text-start">
           Quantity:
 
-        </h3>
+          </h3>
+          <div className="flex flex-col flex-1 gap-2">
+            <div className="flex items-center flex-row w-full gap-2">
+              <button
+                className={`${btnStyle} ${(quantity === maxQuantity ? "bg-custom-green" : "bg-transparent")}`}
+                disabled={quantity > maxQuantity}
+                onClick={() => increment(quantity)}
+                type="button"
+              >
+                +
+              </button>
 
-        <div className="flex items-center flex-row w-full gap-2">
+              <section>{getQuantityWithConstraint()}</section>
 
-          <button
-            className={`${btnStyle} ${(quantity === maxQuantity ? "bg-custom-green" : "bg-transparent")}`}
-            disabled={quantity > maxQuantity}
-            onClick={() => increment(quantity)}
-            type="button"
-          >
-            +
-          </button>
-
-          <section>{getQuantityWithConstraint()}</section>
-
-          <button
-            className={`${btnStyle} ${(quantity === minQuantity ? "bg-custom-green" : "bg-transparent")} `}
-            disabled={quantity < minQuantity}
-            onClick={() => decrement(quantity)}
-            type="button"
-          >
-            -
-          </button>
-
+              <button
+                className={`${btnStyle} ${(quantity === minQuantity ? "bg-custom-green" : "bg-transparent")} `}
+                disabled={quantity < minQuantity}
+                onClick={() => decrement(quantity)}
+                type="button"
+              >
+                -
+              </button>
+            </div>
+          </div>
         </div>
-        
-      </div>
 
-      <div>
-        {hasError ? (
-          <p className="text-red-400 font-bold">
-            {`Quantity must be between ${minQuantity} and ${maxQuantity}`}
-          </p>
-        ) : (
-          <p className="text-custom-offWhite font-bold">
-            Please select a quantity
-          </p>
-        )}
-      </div>
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="self-end text-font-size-fluid-1 cursor-pointer border-2 border-custom-offWhite rounded-lg p-2 hover:bg-custom-darkest-green"
+        >
+          Submit
+        </button>
+    </div>
 
-      <button
-        type="submit"
-        onClick={handleSubmit}
-        className="self-end text-font-size-fluid-1 cursor-pointer border-2 border-custom-offWhite rounded-lg p-2 hover:bg-custom-darkest-green"
-      >
-        Submit
-      </button>
+    <div>
+      {hasError ? (
+        <p className="text-red-400 font-bold">
+          {`Quantity must be between ${minQuantity} and ${maxQuantity}`}
+        </p>
+      ) : (
+        <p className="text-custom-offWhite font-bold">
+          Please select a quantity
+        </p>
+      )}
+    </div>
 
     </form>
   )
