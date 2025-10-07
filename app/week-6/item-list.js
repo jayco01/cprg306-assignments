@@ -97,12 +97,23 @@ export default function ItemList() {
   };
 
   return (
-    <div className=" bg-custom-darker-green p-8 rounded-lg">
-      <div className="flex flex-col md:flex-row gap-4">
-        <button className={btnStyle} onClick={handleSortChange} value="name"> name </button>
-        <button className={btnStyle} onClick={handleSortChange} value="category"> category </button>
+    <div className=" bg-custom-green rounded-lg flex flex-col p-8">
+      <div className="flex flex-col md:flex-row gap-4 bg-custom-darkest-green p-4 rounded-t-lg">
+        <h2 className="font-extrabold text-font-size-fluid-0">Sort by:</h2>
+        <button
+          className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
+          onClick={handleSortChange}
+          value="name">
+          name
+        </button>
+        <button
+          className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
+          onClick={handleSortChange}
+          value="category">
+          category
+        </button>
       </div>
-      <ul className="font-semibold">
+      <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
         {sortedItems.map((item) => (
           <Item
             key={item.id}

@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <nav className="absolute top-0 left-0 w-full p-4">
+      <nav className="top-0 left-0 w-full p-4 bg-custom-darker-green">
         <ul className="flex flex-row gap-4">
           <li>
             <Link href="/" className="text-font-size-fluid-0 hover:underline font-bold">
@@ -48,6 +48,11 @@ export default function RootLayout({ children }) {
           <li>
             <Link href="/week-5" className="text-font-size-fluid-0 hover:underline font-bold">
               Week 5
+            </Link>
+          </li>
+          <li>
+            <Link href="/week-6" className="text-font-size-fluid-0 hover:underline font-bold">
+              Week 6
             </Link>
           </li>
         </ul>

@@ -11,16 +11,17 @@ export default function Item({ name, quantity, category }) {
     const inactiveList = "bg-transparent"
 
   return (
-    <li className={`${isChecked ? activeList : inactiveList} rounded-sm border-2 border-custom-offWhite m-2 p-2 hover:bg-custom-green`}>
-      <label className="cursor-pointer p-2">
-        <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={() => setChecked(!isChecked)}
-        className="mr-2"
-        />
-      </label>
-      {htmlString}
-    </li>
+    <label className="cursor-pointer">
+      <li className={`${isChecked ? activeList : inactiveList} rounded-sm border-2 border-custom-offWhite p-2 hover:bg-custom-green`}>
+          <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => setChecked(!isChecked)}
+          className="mr-2"
+          />
+
+        {htmlString}
+      </li>
+    </label>
   );
 }
