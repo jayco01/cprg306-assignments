@@ -6,6 +6,7 @@ import {useState} from "react";
 export default function ItemList() {
 
   const [sortBy, setSortBy] = useState("name");
+  const btnStyle = `flex-1 font-extrabold text-font-size-fluid-0 cursor-pointer border-2 border-custom-offWhite rounded-lg`;
 
   const items = [
     {
@@ -91,16 +92,26 @@ export default function ItemList() {
     return 0;
   });
 
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
   return (
-    <ul className="font-semibold">
-      {sortedItems.map((item) => (
-        <Item
-          key={item.name}
-          name={item.name}
-          quantity={item.quantity}
-          category={item.category}>
-        </Item>
-      ))}
-    </ul>
+    <div className=" bg-custom-darker-green p-8 rounded-lg">
+      <div className="flex flex-col md:flex-row gap-4">
+        <button className={btnStyle} onClick={handleSortChange} value="name"> name </button>
+        <button className={btnStyle} onClick={handleSortChange} value="category"> category </button>
+      </div>
+      <ul className="font-semibold">
+        {sortedItems.map((item) => (
+          <Item
+            key={item.id}
+            name={item.name}
+            quantity={item.quantity}
+            category={item.category}>
+          </Item>
+        ))}
+      </ul>
+    </div>
   );
 }

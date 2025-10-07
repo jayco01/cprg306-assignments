@@ -7,11 +7,11 @@ export default function Item({ name, quantity, category }) {
 
     const htmlString = `${name} ${quantity} ${category} `;
 
-    const activeList = "bg-custom-green"
+    const activeList = "bg-custom-darkest-green line-through";
     const inactiveList = "bg-transparent"
 
   return (
-    <li className={`${isChecked ? activeList : inactiveList} rounded-sm border-2 border-custom-offWhite m-2 p-2 hover:scale-x-105`}>
+    <li className={`${isChecked ? activeList : inactiveList} rounded-sm border-2 border-custom-offWhite m-2 p-2 hover:bg-custom-green`}>
       <label className="cursor-pointer p-2">
         <input
         type="checkbox"
