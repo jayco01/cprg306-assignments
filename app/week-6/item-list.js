@@ -1,6 +1,12 @@
+'use client'
+
 import Item from "@/app/week-6/item";
+import {useState} from "react";
 
 export default function ItemList() {
+
+  const [sortBy, setSortBy] = useState("name");
+
   const items = [
     {
       "id": "1h2GJKH12gkHG31h1H",
@@ -76,9 +82,18 @@ export default function ItemList() {
     }
   ];
 
+  const sortedItems = [...items].sort((a, b) => {
+    if (sortBy === "name") {
+      return a.name.localeCompare(b.name);
+    } else if (sortBy === "category") {
+      return a.category.localeCompare(b.category);
+    }
+    return 0;
+  });
+
   return (
     <ul className="font-semibold">
-      {items.map((item) => (
+      {sortedItems.map((item) => (
         <Item
           key={item.name}
           name={item.name}

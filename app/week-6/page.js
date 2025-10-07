@@ -1,4 +1,4 @@
-import ItemList from "@/app/week-3/item-list";
+import ItemList from "@/app/week-6/item-list";
 
 export default function Page() {
   return (
