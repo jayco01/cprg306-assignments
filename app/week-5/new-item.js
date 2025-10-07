@@ -48,6 +48,11 @@ export default function NewItem() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    if(name.trim() === "") {
+      alert("Please enter a valid item name.");
+      return;
+    }
+
     const item = {
       name: name,
       category: category,
