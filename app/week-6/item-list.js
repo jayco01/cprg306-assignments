@@ -8,6 +8,8 @@ export default function ItemList() {
   const [sortBy, setSortBy] = useState("name");
   const btnStyle = `flex-1 font-extrabold text-font-size-fluid-0 cursor-pointer border-2 border-custom-offWhite rounded-lg`;
   const [isCategorized, setIsCategorized] = useState(false);
+  const [isSortByNameDisabled, setIsSortByNameDisabled] = useState(true);
+  const [isSortByCategoryDisabled, setIsSortByCategoryDisabled] = useState(false);
 
   const items = [
     {
@@ -99,7 +101,7 @@ export default function ItemList() {
     }
     return acc;
   }, []);
-  console.log("Available categories: " +categories);
+  // console.log("Available categories: " +categories);
 
   const categorizedItems = categories.map(category => {
     return {
@@ -107,14 +109,35 @@ export default function ItemList() {
       items: sortedItems.filter(item => item.category === category)
     };
   });
-  console.log("Categorized items: ", categorizedItems);
+  // console.log("Categorized items: ", categorizedItems);
+
 
   const handleCategorizedDisplay = () => {
     setIsCategorized(!isCategorized);
+    if (!isCategorized) {
+      setSortBy("name");
+      setIsSortByNameDisabled(false);
+      setIsSortByCategoryDisabled(true);
+    } else {
+      setIsSortByNameDisabled(true);
+      setIsSortByCategoryDisabled(false);
+    }
   }
 
   const handleSortChange = (e) => {
+    if(isCategorized) {
+      console.log("Disable categorize checkbox")
+      return;
+    }
+
     setSortBy(e.target.value);
+    if (e.target.value === "name") {
+      setIsSortByNameDisabled(true);
+      setIsSortByCategoryDisabled(false);
+    } else {
+      setIsSortByNameDisabled(false);
+      setIsSortByCategoryDisabled(true);
+    }
   };
 
 
@@ -129,23 +152,27 @@ export default function ItemList() {
           <button
             className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
             onClick={handleSortChange}
+            disabled={isSortByNameDisabled}
             value="name">
             name
           </button>
           <button
             className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
             onClick={handleSortChange}
+            disabled={isSortByCategoryDisabled}
             value="category">
             category
           </button>
         </div>
 
 
-        <div className="flex flex-row gap-2 w-full font-semibold">
+        <div className="flex flex-row gap-2 w-full font-semibold align-middle">
           <p className="text-font-size-fluid-0">Display items by Categories: </p>
-          <input
-            type="checkbox"
-            onClick={handleCategorizedDisplay}/>
+          <label className="px-2 flex flex-row align-middle">
+            <input
+              type="checkbox"
+              onChange={handleCategorizedDisplay}/>
+          </label>
         </div>
 
       </div>
@@ -162,11 +189,11 @@ export default function ItemList() {
             </Item>
           ))}
         </ul> :
-        <div>
+        <div className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
           {categorizedItems.map((catItem) => (
             <div key={catItem.category}>
               <h3
-                className="font-semibold text-font-size-fluid-0"
+                className="font-semibold capitalize"
               >
                 {catItem.category}
               </h3>
