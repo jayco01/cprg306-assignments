@@ -10,6 +10,7 @@ export default function ItemList() {
   const [isCategorized, setIsCategorized] = useState(false);
   const [isSortByNameDisabled, setIsSortByNameDisabled] = useState(true);
   const [isSortByCategoryDisabled, setIsSortByCategoryDisabled] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
 
   const items = [
     {
@@ -140,6 +141,12 @@ export default function ItemList() {
     }
   };
 
+  const handleItemCheck = (itemId) => {
+    setCheckedItems(prev =>
+      prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId]
+    );
+  };
+
 
   return (
     <div className=" bg-custom-green rounded-lg flex flex-col p-8">
@@ -183,9 +190,12 @@ export default function ItemList() {
           {sortedItems.map((item) => (
             <Item
               key={item.id}
+              id={item.id}
               name={item.name}
               quantity={item.quantity}
-              category={item.category}>
+              category={item.category}
+              isChecked={checkedItems.includes(item.id)}
+              onCheck={handleItemCheck}>
             </Item>
           ))}
         </ul> :
@@ -201,9 +211,12 @@ export default function ItemList() {
                 {catItem.items.map((item) => (
                   <Item
                     key={item.id}
+                    id={item.id}
                     name={item.name}
                     quantity={item.quantity}
-                    category={item.category}>
+                    category={item.category}
+                    isChecked={checkedItems.includes(item.id)}
+                    onCheck={handleItemCheck}>
                   </Item>
                 ))}
               </ul>

@@ -2,8 +2,8 @@
 
 import {useState} from "react";
 
-export default function Item({ name, quantity, category }) {
-    const [isChecked, setChecked] = useState(false);
+export default function Item({ id, name, quantity, category, isChecked, onCheck }) {
+    // const [isChecked, setChecked] = useState(false);
 
     const htmlString = `${name} ${quantity} ${category} `;
 
@@ -16,7 +16,7 @@ export default function Item({ name, quantity, category }) {
           <input
           type="checkbox"
           checked={isChecked}
-          onChange={() => setChecked(!isChecked)}
+          onChange={() => onCheck(id)}
           className="mr-2"
           />
 
