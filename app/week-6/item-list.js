@@ -7,6 +7,7 @@ export default function ItemList() {
 
   const [sortBy, setSortBy] = useState("name");
   const btnStyle = `flex-1 font-extrabold text-font-size-fluid-0 cursor-pointer border-2 border-custom-offWhite rounded-lg`;
+  const [isCategorized, setIsCategorized] = useState(false);
 
   const items = [
     {
@@ -108,29 +109,48 @@ export default function ItemList() {
   });
   console.log("Categorized items: ", categorizedItems);
 
+  const handleCategorizedDisplay = () => {
+    setIsCategorized(!isCategorized);
+  }
+
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
   };
 
-  const isCategorized = true;
 
   return (
     <div className=" bg-custom-green rounded-lg flex flex-col p-8">
-      <div className="flex flex-col md:flex-row gap-4 bg-custom-darkest-green p-4 rounded-t-lg">
-        <h2 className="font-extrabold text-font-size-fluid-0">Sort by:</h2>
-        <button
-          className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
-          onClick={handleSortChange}
-          value="name">
-          name
-        </button>
-        <button
-          className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
-          onClick={handleSortChange}
-          value="category">
-          category
-        </button>
+
+      {/* **** Buttons Section *** */}
+      <div className="flex flex-col gap-4 bg-custom-darkest-green p-4 rounded-t-lg">
+
+        <div className="flex flex-col md:flex-row gap-2 w-full">
+          <h3 className="font-extrabold">Sort by:</h3>
+          <button
+            className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
+            onClick={handleSortChange}
+            value="name">
+            name
+          </button>
+          <button
+            className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
+            onClick={handleSortChange}
+            value="category">
+            category
+          </button>
+        </div>
+
+
+        <div className="flex flex-row gap-2 w-full font-semibold">
+          <p className="text-font-size-fluid-0">Display items by Categories: </p>
+          <input
+            type="checkbox"
+            onClick={handleCategorizedDisplay}/>
+        </div>
+
       </div>
+
+      {/* ****List section*** */}
       {(!isCategorized) ?
         <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
           {sortedItems.map((item) => (
