@@ -92,9 +92,27 @@ export default function ItemList() {
     return 0;
   });
 
+  const categories = [...items].reduce((acc, item) => {
+    if (!acc.includes(item.category)) {
+      acc.push(item.category);
+    }
+    return acc;
+  }, []);
+  console.log("Available categories: " +categories);
+
+  const categorizedItems = categories.map(category => {
+    return {
+      category,
+      items: sortedItems.filter(item => item.category === category)
+    };
+  });
+  console.log("Categorized items: ", categorizedItems);
+
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
   };
+
+  const isCategorized = true;
 
   return (
     <div className=" bg-custom-green rounded-lg flex flex-col p-8">
@@ -113,16 +131,40 @@ export default function ItemList() {
           category
         </button>
       </div>
-      <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
-        {sortedItems.map((item) => (
-          <Item
-            key={item.id}
-            name={item.name}
-            quantity={item.quantity}
-            category={item.category}>
-          </Item>
-        ))}
-      </ul>
+      {(!isCategorized) ?
+        <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
+          {sortedItems.map((item) => (
+            <Item
+              key={item.id}
+              name={item.name}
+              quantity={item.quantity}
+              category={item.category}>
+            </Item>
+          ))}
+        </ul> :
+        <div>
+          {categorizedItems.map((catItem) => (
+            <div key={catItem.category}>
+              <h3
+                className="font-semibold text-font-size-fluid-0"
+              >
+                {catItem.category}
+              </h3>
+              <ul>
+                {catItem.items.map((item) => (
+                  <Item
+                    key={item.id}
+                    name={item.name}
+                    quantity={item.quantity}
+                    category={item.category}>
+                  </Item>
+                ))}
+              </ul>
+            </div>
+          ))
+          }
+        </div>
+      }
     </div>
   );
 }
