@@ -8,8 +8,6 @@ export default function ItemList() {
   const [sortBy, setSortBy] = useState("name");
   const btnStyle = `flex-1 font-extrabold text-font-size-fluid-0 cursor-pointer border-2 border-custom-offWhite rounded-lg`;
   const [isCategorized, setIsCategorized] = useState(false);
-  const [isSortByNameDisabled, setIsSortByNameDisabled] = useState(true);
-  const [isSortByCategoryDisabled, setIsSortByCategoryDisabled] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
   const [displayCategoryBtnError, setDisplayCategoryBtnError] = useState("hidden");
 
@@ -115,34 +113,24 @@ export default function ItemList() {
 
 
   const handleCategorizedDisplay = () => {
-    setIsCategorized(!isCategorized);
+    const newIsCategorized = !isCategorized;
+    setIsCategorized(newIsCategorized);
 
-    if (!isCategorized) {
+    if (newIsCategorized) {
       setSortBy("name");
-    } else {
-        if(displayCategoryBtnError === "") {
-          setDisplayCategoryBtnError("hidden");
-        }
-      setIsSortByNameDisabled(true);
-      setIsSortByCategoryDisabled(false);
+    } else if (displayCategoryBtnError === "") {
+        setDisplayCategoryBtnError("hidden");
     }
-  }
+  };
 
   const handleSortChange = (e) => {
     handleCategoryBtnError();
     if(isCategorized) {
+      setDisplayCategoryBtnError("");
       console.log("Disable categorize checkbox")
       return;
     }
-
     setSortBy(e.target.value);
-    if (e.target.value === "name") {
-      setIsSortByNameDisabled(true);
-      setIsSortByCategoryDisabled(false);
-    } else {
-      setIsSortByNameDisabled(false);
-      setIsSortByCategoryDisabled(true);
-    }
   };
 
   const handleItemCheck = (itemId) => {
@@ -172,14 +160,14 @@ export default function ItemList() {
           <button
             className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
             onClick={ handleSortChange }
-            disabled={isSortByNameDisabled}
+            disabled={sortBy === 'name'}
             value="name">
             name
           </button>
           <button
             className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
             onClick={!isCategorized ? handleSortChange : handleCategoryBtnError}
-            disabled={isSortByCategoryDisabled}
+            disabled={sortBy === 'category' && !isCategorized}
             value="category">
             category
           </button>
