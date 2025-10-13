@@ -11,6 +11,7 @@ export default function ItemList() {
   const [isSortByNameDisabled, setIsSortByNameDisabled] = useState(true);
   const [isSortByCategoryDisabled, setIsSortByCategoryDisabled] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
+  const [displayCategoryBtnError, setDisplayCategoryBtnError] = useState("hidden");
 
   const items = [
     {
@@ -115,17 +116,20 @@ export default function ItemList() {
 
   const handleCategorizedDisplay = () => {
     setIsCategorized(!isCategorized);
+
     if (!isCategorized) {
       setSortBy("name");
-      setIsSortByNameDisabled(false);
-      setIsSortByCategoryDisabled(true);
     } else {
+        if(displayCategoryBtnError === "") {
+          setDisplayCategoryBtnError("hidden");
+        }
       setIsSortByNameDisabled(true);
       setIsSortByCategoryDisabled(false);
     }
   }
 
   const handleSortChange = (e) => {
+    handleCategoryBtnError();
     if(isCategorized) {
       console.log("Disable categorize checkbox")
       return;
@@ -147,6 +151,15 @@ export default function ItemList() {
     );
   };
 
+  const handleCategoryBtnError = () => {
+    if(isCategorized) {
+      setDisplayCategoryBtnError("");
+    } else {
+      setDisplayCategoryBtnError("hidden");
+    }
+  }
+
+
 
   return (
     <div className=" bg-custom-green rounded-lg flex flex-col p-8">
@@ -158,20 +171,23 @@ export default function ItemList() {
           <h3 className="font-extrabold">Sort by:</h3>
           <button
             className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
-            onClick={handleSortChange}
+            onClick={ handleSortChange }
             disabled={isSortByNameDisabled}
             value="name">
             name
           </button>
           <button
             className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
-            onClick={handleSortChange}
+            onClick={!isCategorized ? handleSortChange : handleCategoryBtnError}
             disabled={isSortByCategoryDisabled}
             value="category">
             category
           </button>
         </div>
 
+        <div className="min-h-1 w-full">
+          <p className={`${displayCategoryBtnError} text-red-700`}> Uncheck &#34;Display items by Categories&#34;</p>
+        </div>
 
         <div className="flex flex-row gap-2 w-full font-semibold align-middle">
           <p className="text-font-size-fluid-0">Display items by Categories: </p>

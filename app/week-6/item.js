@@ -1,9 +1,6 @@
 'use client'
 
-import {useState} from "react";
-
 export default function Item({ id, name, quantity, category, isChecked, onCheck }) {
-    // const [isChecked, setChecked] = useState(false);
 
     const htmlString = `${name} ${quantity} ${category} `;
 
