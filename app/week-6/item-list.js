@@ -123,14 +123,13 @@ export default function ItemList() {
     }
   };
 
-  const handleSortChange = (e) => {
-    handleCategoryBtnError();
+  const handleSortChange = (newSortBy) => {
     if(isCategorized) {
       setDisplayCategoryBtnError("");
       console.log("Disable categorize checkbox")
       return;
     }
-    setSortBy(e.target.value);
+    setSortBy(newSortBy);
   };
 
   const handleItemCheck = (itemId) => {
@@ -139,13 +138,6 @@ export default function ItemList() {
     );
   };
 
-  const handleCategoryBtnError = () => {
-    if(isCategorized) {
-      setDisplayCategoryBtnError("");
-    } else {
-      setDisplayCategoryBtnError("hidden");
-    }
-  }
 
 
 
@@ -159,14 +151,14 @@ export default function ItemList() {
           <h3 className="font-extrabold">Sort by:</h3>
           <button
             className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
-            onClick={ handleSortChange }
+            onClick={() => handleSortChange("name") }
             disabled={sortBy === 'name'}
             value="name">
             name
           </button>
           <button
             className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
-            onClick={!isCategorized ? handleSortChange : handleCategoryBtnError}
+            onClick={() => handleSortChange("category")}
             disabled={sortBy === 'category' && !isCategorized}
             value="category">
             category
@@ -191,6 +183,7 @@ export default function ItemList() {
       {/* ****List section*** */}
       {(!isCategorized) ?
         <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
+          {/* Display regular list */}
           {sortedItems.map((item) => (
             <Item
               key={item.id}
@@ -202,8 +195,12 @@ export default function ItemList() {
               onCheck={handleItemCheck}>
             </Item>
           ))}
-        </ul> :
+        </ul>
+
+        :
+
         <div className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
+          {/* Display List in Sub-categories */}
           {categorizedItems.map((catItem) => (
             <div key={catItem.category}>
               <h3
