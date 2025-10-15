@@ -11,7 +11,7 @@ export default function ItemList() {
   const [checkedItems, setCheckedItems] = useState([]);
   const [displayCategoryBtnError, setDisplayCategoryBtnError] = useState("hidden");
 
-  const items = [
+  const [items, setItems] = useState( [
     {
       "id": "1h2GJKH12gkHG31h1H",
       "name": "milk, 4 L 🥛",
@@ -84,16 +84,26 @@ export default function ItemList() {
       "quantity": 4,
       "category": "household"
     }
-  ];
+  ]);
 
-  const sortedItems = [...items].sort((a, b) => {
-    if (sortBy === "name") {
-      return a.name.localeCompare(b.name);
-    } else if (sortBy === "category") {
-      return a.category.localeCompare(b.category);
+  const handleSortingItems = (newSortBy) => {
+    if(isCategorized) {
+      setDisplayCategoryBtnError("");
+      console.log("Disable categorize checkbox")
+      return;
     }
-    return 0;
-  });
+    setSortBy(newSortBy);
+
+    setItems([...items].sort((a, b) => {
+      if (newSortBy === "name") {
+        return a.name.localeCompare(b.name);
+      } else if (newSortBy === "category") {
+        return a.category.localeCompare(b.category);
+      }
+      return 0;
+    }));
+  };
+
 
   const categories = [...items].reduce((acc, item) => {
     if (!acc.includes(item.category)) {
@@ -106,7 +116,7 @@ export default function ItemList() {
   const categorizedItems = categories.map(category => {
     return {
       category,
-      items: sortedItems.filter(item => item.category === category)
+      items: items.filter(item => item.category === category)
     };
   });
   // console.log("Categorized items: ", categorizedItems);
@@ -123,14 +133,14 @@ export default function ItemList() {
     }
   };
 
-  const handleSortChange = (newSortBy) => {
-    if(isCategorized) {
-      setDisplayCategoryBtnError("");
-      console.log("Disable categorize checkbox")
-      return;
-    }
-    setSortBy(newSortBy);
-  };
+  // const handleSortChange = (newSortBy) => {
+  //   if(isCategorized) {
+  //     setDisplayCategoryBtnError("");
+  //     console.log("Disable categorize checkbox")
+  //     return;
+  //   }
+  //   setSortBy(newSortBy);
+  // };
 
   const handleItemCheck = (itemId) => {
     setCheckedItems(prev =>
@@ -151,14 +161,14 @@ export default function ItemList() {
           <h3 className="font-extrabold">Sort by:</h3>
           <button
             className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
-            onClick={() => handleSortChange("name") }
+            onClick={() => handleSortingItems("name") }
             disabled={sortBy === 'name'}
             value="name">
             name
           </button>
           <button
             className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
-            onClick={() => handleSortChange("category")}
+            onClick={() => handleSortingItems("category")}
             disabled={sortBy === 'category' && !isCategorized}
             value="category">
             category
@@ -184,7 +194,7 @@ export default function ItemList() {
       {(!isCategorized) ?
         <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
           {/* Display regular list */}
-          {sortedItems.map((item) => (
+          {items.map((item) => (
             <Item
               key={item.id}
               id={item.id}
