@@ -84,7 +84,7 @@ export default function NewItem() {
       <div className="flex justify-between items-center flex-row w-full gap-2 max-h-12">
         <div className="flex-1 flex justify-start items-center flex-row gap-2 h-full">
           <h3>Name:</h3>
-          <label htmlFor="name" className="text-font-size-fluid-1">
+          <label htmlFor="item-name" className="text-font-size-fluid-1">
             <input
               id="item-name"
               type="text"

@@ -133,15 +133,6 @@ export default function ItemList() {
     }
   };
 
-  // const handleSortChange = (newSortBy) => {
-  //   if(isCategorized) {
-  //     setDisplayCategoryBtnError("");
-  //     console.log("Disable categorize checkbox")
-  //     return;
-  //   }
-  //   setSortBy(newSortBy);
-  // };
-
   const handleItemCheck = (itemId) => {
     setCheckedItems(prev =>
       prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId]
