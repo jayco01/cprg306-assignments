@@ -150,6 +150,7 @@ export default function ItemList() {
     <div className="flex flex-col md:flex-row justify-center align-middle gap-8">
       <NewItem
         handleAddingNewItem={handleAddingItem}
+        categoryList={categories}
       />
       <div className=" bg-custom-green rounded-lg flex flex-col p-8">
 

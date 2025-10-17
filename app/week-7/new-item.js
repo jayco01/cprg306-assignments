@@ -4,12 +4,14 @@ import {useState} from "react";
 
 import { v4 as uuidv4 } from 'uuid';
 
-export default function NewItem({ handleAddingNewItem }) {
+export default function NewItem({ handleAddingNewItem, categoryList }) {
 
   const [quantity, setQuantity] = useState(1);
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("Produce");
+  const [name, setName] = useState(null);
+  const [category, setCategory] = useState(null);
   const [hasError, setHasError] = useState(false);
+
+  const categories = categoryList;
   const maxQuantity = 20;
   const minQuantity = 1;
 
@@ -62,19 +64,21 @@ export default function NewItem({ handleAddingNewItem }) {
       category: category
     });
 
-    console.log(`Item name: ${item.name}, Catergory: ${item.category}, Quantity: ${item.quantity}`);
+    const item = {
+      id: uuidv4(),
+      name: name,
+      quantity: getQuantityWithConstraint(),
+      category: category
+    }
 
-    setName("");
-    setCategory("Produce");
+    console.log(`Item name: ${item.name}, Category: ${item.category}, Quantity: ${item.quantity}, Item Id: ${item.id}`);
+
+    setName(null);
+    setCategory(null);
     setQuantity(1);
     setHasError(false);
   }
 
-  const categories = [
-    "Produce", "Dairy", "Bakery", "Meat", "Frozen Foods",
-    "Canned Goods", "Dry Goods", "Beverages", "Snacks",
-    "Household", "Other"
-  ]
 
 
   return (
@@ -84,7 +88,7 @@ export default function NewItem({ handleAddingNewItem }) {
         className="flex items-center flex-col gap-4 bg-custom-darker-green p-8 rounded-lg"
       >
 
-        <div className="flex justify-between items-start md:items-center flex-col md:flex-row w-full gap-2 h-min">
+        <div className="flex justify-between items-start flex-col w-full gap-2 h-min">
           <div className="flex-1 flex justify-start items-center flex-row gap-2 h-full">
             <h3>Name:</h3>
             <label htmlFor="item-name" className="text-font-size-fluid-1">
@@ -101,9 +105,15 @@ export default function NewItem({ handleAddingNewItem }) {
 
           <div>
             <span className="text-font-size-fluid-1">Category: </span>
-            <select className="flex-1 text-font-size-fluid-1 bg-custom-dark-green p-2 rounded-lg">
+            <select
+              className="flex-1 text-font-size-fluid-1 bg-custom-dark-green p-2 rounded-lg"
+              onChange={event => setCategory(event.target.value)}
+            >
               {categories.map((category) => (
-                <option key={category} value={category} className="text-font-size-fluid-1"> {category}</option>
+                <option key={category}
+                        value={category}
+                        className="text-font-size-fluid-1"
+                > {category}</option>
               ))}
             </select>
           </div>
