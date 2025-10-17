@@ -2,6 +2,7 @@
 
 import Item from "@/app/week-7/item";
 import {useState} from "react";
+import NewItem from "@/app/week-7/new-item";
 
 export default function ItemList() {
 
@@ -104,6 +105,11 @@ export default function ItemList() {
     }));
   };
 
+  const handleAddingItem = (newItem) => {
+    if(newItem !== null) {
+      setItems([...items, newItem]);
+    }
+  }
 
   const categories = [...items].reduce((acc, item) => {
     if (!acc.includes(item.category)) {
@@ -141,90 +147,95 @@ export default function ItemList() {
 
 
   return (
-    <div className=" bg-custom-green rounded-lg flex flex-col p-8">
+    <div className="flex flex-col md:flex-row justify-center align-middle gap-8">
+      <NewItem
+        handleAddingNewItem={handleAddingItem}
+      />
+      <div className=" bg-custom-green rounded-lg flex flex-col p-8">
 
-      {/* **** Buttons Section *** */}
-      <div className="flex flex-col gap-4 bg-custom-darkest-green p-4 rounded-t-lg">
+        {/* **** Buttons Section *** */}
+        <div className="flex flex-col gap-4 bg-custom-darkest-green p-4 rounded-t-lg">
 
-        <div className="flex flex-col md:flex-row gap-2 w-full">
-          <h3 className="font-extrabold">Sort by:</h3>
-          <button
-            className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
-            onClick={() => handleSortingItems("name") }
-            disabled={sortBy === 'name'}
-            value="name">
-            name
-          </button>
-          <button
-            className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
-            onClick={() => handleSortingItems("category")}
-            disabled={sortBy === 'category' && !isCategorized}
-            value="category">
-            category
-          </button>
+          <div className="flex flex-col md:flex-row gap-2 w-full">
+            <h3 className="font-extrabold">Sort by:</h3>
+            <button
+              className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
+              onClick={() => handleSortingItems("name")}
+              disabled={sortBy === 'name'}
+              value="name">
+              name
+            </button>
+            <button
+              className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
+              onClick={() => handleSortingItems("category")}
+              disabled={sortBy === 'category' && !isCategorized}
+              value="category">
+              category
+            </button>
+          </div>
+
+          <div className="min-h-1 w-full">
+            <p className={`${displayCategoryBtnError} text-red-700`}> Uncheck &#34;Display items by Categories&#34;</p>
+          </div>
+
+          <div className="flex flex-row gap-2 w-full font-semibold align-middle">
+            <p className="text-font-size-fluid-0">Display items by Categories: </p>
+            <label className="px-2 flex flex-row align-middle">
+              <input
+                type="checkbox"
+                onChange={handleCategorizedDisplay}/>
+            </label>
+          </div>
+
         </div>
 
-        <div className="min-h-1 w-full">
-          <p className={`${displayCategoryBtnError} text-red-700`}> Uncheck &#34;Display items by Categories&#34;</p>
-        </div>
+        {/* ****List section*** */}
+        {(!isCategorized) ?
+          <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
+            {/* Display regular list */}
+            {items.map((item) => (
+              <Item
+                key={item.id}
+                id={item.id}
+                name={item.name}
+                quantity={item.quantity}
+                category={item.category}
+                isChecked={checkedItems.includes(item.id)}
+                onCheck={handleItemCheck}>
+              </Item>
+            ))}
+          </ul>
 
-        <div className="flex flex-row gap-2 w-full font-semibold align-middle">
-          <p className="text-font-size-fluid-0">Display items by Categories: </p>
-          <label className="px-2 flex flex-row align-middle">
-            <input
-              type="checkbox"
-              onChange={handleCategorizedDisplay}/>
-          </label>
-        </div>
+          :
 
+          <div className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
+            {/* Display List in Sub-categories */}
+            {categorizedItems.map((catItem) => (
+              <div key={catItem.category}>
+                <h3
+                  className="font-semibold capitalize"
+                >
+                  {catItem.category}
+                </h3>
+                <ul>
+                  {catItem.items.map((item) => (
+                    <Item
+                      key={item.id}
+                      id={item.id}
+                      name={item.name}
+                      quantity={item.quantity}
+                      category={item.category}
+                      isChecked={checkedItems.includes(item.id)}
+                      onCheck={handleItemCheck}>
+                    </Item>
+                  ))}
+                </ul>
+              </div>
+            ))
+            }
+          </div>
+        }
       </div>
-
-      {/* ****List section*** */}
-      {(!isCategorized) ?
-        <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
-          {/* Display regular list */}
-          {items.map((item) => (
-            <Item
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              quantity={item.quantity}
-              category={item.category}
-              isChecked={checkedItems.includes(item.id)}
-              onCheck={handleItemCheck}>
-            </Item>
-          ))}
-        </ul>
-
-        :
-
-        <div className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
-          {/* Display List in Sub-categories */}
-          {categorizedItems.map((catItem) => (
-            <div key={catItem.category}>
-              <h3
-                className="font-semibold capitalize"
-              >
-                {catItem.category}
-              </h3>
-              <ul>
-                {catItem.items.map((item) => (
-                  <Item
-                    key={item.id}
-                    id={item.id}
-                    name={item.name}
-                    quantity={item.quantity}
-                    category={item.category}
-                    isChecked={checkedItems.includes(item.id)}
-                    onCheck={handleItemCheck}>
-                  </Item>
-                ))}
-              </ul>
-            </div>
-          ))
-          }
-        </div>
-      }
     </div>
   );
 }
