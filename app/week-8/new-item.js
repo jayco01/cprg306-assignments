@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 export default function NewItem({ handleAddingNewItem, categoryList }) {
 
   const [quantity, setQuantity] = useState(1);
-  const [name, setName] = useState(null);
+  const [name, setName] = useState("");
   const [category, setCategory] = useState(null);
   const [hasError, setHasError] = useState(false);
 

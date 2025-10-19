@@ -1,7 +1,7 @@
 
 
-import NewItem from "@/app/week-7/new-item";
-import ItemList from "@/app/week-7/item-list";
+import ItemList from "@/app/week-8/item-list";
+import MealIdeas from "@/app/week-8/meal-ideas";
 
 export default function Page() {
 
@@ -9,6 +9,7 @@ export default function Page() {
     <section className="flex flex-col p-4">
       <h1 className="font-bold md:text-nowrap text-center">Shopping List Manager</h1>
           <ItemList/>
+      <MealIdeas></MealIdeas>
 
     </section>
   );
