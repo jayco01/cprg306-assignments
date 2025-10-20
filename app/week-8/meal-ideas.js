@@ -8,6 +8,7 @@ export default function MealIdeas({items}) {
   const apiKey = apiKeyRaw.replace(/^['"]+|['"]+$/g, '');
 
   const [recipe, setRecipe] = useState(null);
+  const [instruction, setInstruction] = useState([]);
 
 
   const requestOptions = {
@@ -29,17 +30,22 @@ export default function MealIdeas({items}) {
       }
       const recipeResponse = await response.json();
       setRecipe(Array.isArray(recipeResponse) ? recipeResponse[0] : recipeResponse);
+      console.log("instructions: " + recipeResponse[0].instructions);
+      instructionsToArray(recipeResponse[0].instructions);
     } catch (error) {
       console.log(error);
     }
   }
-  console.log(recipe);
 
 
   function isolateName(item) {
     let ingredient = item.split(/[,]+/);
     ingredient = ingredient[0].replace(/\p{Emoji}/gu, '')
     return ingredient.trim();
+  }
+
+  const instructionsToArray = (instructions) => {
+      setInstruction(instructions.split(". "));
   }
 
   return (
@@ -66,14 +72,18 @@ export default function MealIdeas({items}) {
             <p className="underline">{recipe.servings}</p>
 
             <h4 className="mt-4 font-semibold">Ingredients</h4>
-            <ul className="list-disc list-inside">
+            <ol className="list-disc list-inside">
               {Array.isArray(recipe.ingredients) ? recipe.ingredients.map((ing) => (
                 <li key={ing}>{ing}</li>
               )) : <li>{String(recipe.ingredients)}</li>}
-            </ul>
+            </ol>
 
             <h4 className="mt-4 font-semibold">Instructions</h4>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{recipe.instructions}</p>
+            <ul className="list-disc list-inside">
+              {instruction.map((item, index) => (
+                <li className="list-decimal" key={index}>{item}</li>
+              ))}
+            </ul>
           </div>
         ) : null}
       </div>
