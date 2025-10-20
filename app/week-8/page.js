@@ -9,7 +9,6 @@ export default function Page() {
     <section className="flex flex-col p-4">
       <h1 className="font-bold md:text-nowrap text-center">Shopping List Manager</h1>
           <ItemList/>
-      <MealIdeas></MealIdeas>
 
     </section>
   );

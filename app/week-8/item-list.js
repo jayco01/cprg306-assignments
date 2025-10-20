@@ -3,6 +3,7 @@
 import Item from "@/app/week-8/item";
 import {useState} from "react";
 import NewItem from "@/app/week-8/new-item";
+import MealIdeas from "@/app/week-8/meal-ideas";
 
 export default function ItemList() {
 
@@ -148,10 +149,13 @@ export default function ItemList() {
 
   return (
     <div className="flex flex-col md:flex-row justify-center align-middle gap-8">
-      <NewItem
-        handleAddingNewItem={handleAddingItem}
-        categoryList={categories}
-      />
+      <div className="flex flex-col gap-4">
+          <NewItem
+          handleAddingNewItem={handleAddingItem}
+          categoryList={categories}
+        />
+        <MealIdeas items={items}/>
+      </div>
       <div className=" bg-custom-green rounded-lg flex flex-col p-8">
 
         {/* **** Buttons Section *** */}
