@@ -149,14 +149,14 @@ export default function ItemList() {
 
   return (
     <div className="flex flex-col md:flex-row justify-center align-middle gap-8">
-      <div className="flex flex-col gap-4">
+      <div className=" flex-1 flex flex-col gap-4">
           <NewItem
           handleAddingNewItem={handleAddingItem}
           categoryList={categories}
         />
         <MealIdeas items={items}/>
       </div>
-      <div className=" bg-custom-green rounded-lg flex flex-col p-8">
+      <div className="flex-1 bg-custom-green rounded-lg flex flex-col p-8">
 
         {/* **** Buttons Section *** */}
         <div className="flex flex-col gap-4 bg-custom-darkest-green p-4 rounded-t-lg">

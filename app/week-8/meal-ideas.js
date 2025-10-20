@@ -4,17 +4,18 @@ import {useState} from "react";
 
 export default function MealIdeas({items}) {
   const apiBaseUrl = process.env.NEXT_PUBLIC_RECIPE_API_BASE_URL || import.meta?.env?.VITE_RECIPE_API_BASE_URL;
-  const apiKey = process.env.NEXT_PUBLIC_RECIPE_API_KEY || import.meta?.env?.VITE_API_KEY;
+  const apiKeyRaw = process.env.NEXT_PUBLIC_RECIPE_API_KEY || import.meta?.env?.VITE_API_KEY;
+  const apiKey = apiKeyRaw.replace(/^['"]+|['"]+$/g, '');
 
-  const [recipe, setRecipe] = useState("");
-  // const [ingredient, setIngredient] = useState("");
+  const [recipe, setRecipe] = useState(null);
 
 
   const requestOptions = {
     method: 'GET',
-    headers: { 'X-Api-Key': '0qNaLVxKR8vwYOBQ6/W3HQ==O5pM8ix5t0Mu5ajT'},
+    headers: { 'X-Api-Key': apiKey},
     contentType: 'application/json'
   };
+
 
   const handleGettingRecipe = async (item) => {
     let ingredient = isolateName(item.target.value);
@@ -27,11 +28,12 @@ export default function MealIdeas({items}) {
         throw new Error(`Could not find ${ingredient}, ${response.status} ${response.statusText}`);
       }
       const recipeResponse = await response.json();
-      setRecipe(recipeResponse);
+      setRecipe(Array.isArray(recipeResponse) ? recipeResponse[0] : recipeResponse);
     } catch (error) {
       console.log(error);
     }
   }
+  console.log(recipe);
 
 
   function isolateName(item) {
@@ -57,8 +59,23 @@ export default function MealIdeas({items}) {
           ))}
         </select>
       </div>
-      <div>
+      <div className="bg-custom-green rounded-lg p-8">
+        {recipe ? (
+          <div>
+            <h3 className="mt-4 font-bold">{recipe.title}</h3>
+            <p className="underline">{recipe.servings}</p>
 
+            <h4 className="mt-4 font-semibold">Ingredients</h4>
+            <ul className="list-disc list-inside">
+              {Array.isArray(recipe.ingredients) ? recipe.ingredients.map((ing) => (
+                <li key={ing}>{ing}</li>
+              )) : <li>{String(recipe.ingredients)}</li>}
+            </ul>
+
+            <h4 className="mt-4 font-semibold">Instructions</h4>
+            <p style={{ whiteSpace: 'pre-wrap' }}>{recipe.instructions}</p>
+          </div>
+        ) : null}
       </div>
     </div>
   )
