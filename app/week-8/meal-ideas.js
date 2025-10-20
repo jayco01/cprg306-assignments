@@ -17,14 +17,9 @@ export default function MealIdeas({items}) {
   };
 
   const handleGettingRecipe = async (item) => {
-    console.log("before split: " + item.target.value);
-    let ingredient = item.target.value.split(/[,]+/);
-    ingredient = isolateName(ingredient[0]);
-    console.log("after split: " + ingredient);
-
+    let ingredient = isolateName(item.target.value);
     const url = `${apiBaseUrl}${encodeURIComponent(ingredient)}`;
 
-    console.log(url)
     try {
       const response = await fetch(url, requestOptions);
 
@@ -37,11 +32,12 @@ export default function MealIdeas({items}) {
       console.log(error);
     }
   }
-  console.log(recipe);
 
-  function isolateName(str) {
-    str = str.replace(/\p{Emoji}/gu, '')
-    return str.trim();
+
+  function isolateName(item) {
+    let ingredient = item.split(/[,]+/);
+    ingredient = ingredient[0].replace(/\p{Emoji}/gu, '')
+    return ingredient.trim();
   }
 
   return (
@@ -53,9 +49,9 @@ export default function MealIdeas({items}) {
           onChange={handleGettingRecipe}
           defaultValue=""
         >
-          <option value="" disabled>Select an ingredient</option>
+          <option key="label" value="" disabled>Select an ingredient</option>
           {items.map((item) => (
-            <option key={item.key} value={item.name}>
+            <option key={item.id} value={item.name}>
               {item.name}
             </option>
           ))}
