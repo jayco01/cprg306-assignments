@@ -1,7 +1,7 @@
 
 
 import ItemList from "@/app/week-8/item-list";
-import MealIdeas from "@/app/week-8/meal-ideas";
+import RecipeIdeas from "@/app/week-8/recipe-ideas";
 
 export default function Page() {
 

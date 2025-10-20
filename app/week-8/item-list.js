@@ -3,7 +3,7 @@
 import Item from "@/app/week-8/item";
 import {useState} from "react";
 import NewItem from "@/app/week-8/new-item";
-import MealIdeas from "@/app/week-8/meal-ideas";
+import RecipeIdeas from "@/app/week-8/recipe-ideas";
 
 export default function ItemList() {
 
@@ -154,7 +154,7 @@ export default function ItemList() {
           handleAddingNewItem={handleAddingItem}
           categoryList={categories}
         />
-        <MealIdeas items={items}/>
+        <RecipeIdeas items={items}/>
       </div>
       <div className="flex-1 bg-custom-green rounded-lg flex flex-col p-8">
 
