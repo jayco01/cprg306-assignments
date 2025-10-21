@@ -58,13 +58,12 @@ export default function RecipeIdeas({items}) {
 
   const handleRecipeImage = () => {
     return (
-      <div>
-      {/*{recipe ?*/}
-      {/*    <img src={recipeWebUrl} alt={recipe ? recipe.title : recipeWebUrl} /> :*/}
-      {/*    <p>{recipeWebUrl}</p>*/}
-      {/*}*/}
+      <div className="flex justify-center align-middle max-h-1/4">
+      {recipe ?
+          <img src={recipeWebUrl} alt={recipe ? recipe.title : recipeWebUrl} className="h-full" /> :
+          <p>{recipeWebUrl}</p>
+      }
 
-        <img src="https://images.pexels.com/photos/29266883/pexels-photo-29266883.jpeg" />
       </div>
     );
   }
@@ -107,7 +106,7 @@ export default function RecipeIdeas({items}) {
 
 
   return (
-    <div className="bg-custom-green rounded-lg flex flex-col p-8">
+    <div className="bg-custom-darker-green rounded-lg flex flex-col p-8 gap-4">
       <div>
         <select
           id="ingredients"
@@ -122,11 +121,9 @@ export default function RecipeIdeas({items}) {
             </option>
           ))}
         </select>
-        <div>
-          {handleRecipeImage()}
-        </div>
       </div>
-      <div className="bg-custom-green rounded-lg p-8">
+      {handleRecipeImage()}
+      <div className="p-8">
         {recipe ? (
           <div>
             <h3 className="mt-4 font-bold">{recipe.title}</h3>
