@@ -60,6 +60,11 @@ export default function RootLayout({ children }) {
               Week 7
             </Link>
           </li>
+          <li>
+            <Link href="/week-8" className="text-font-size-fluid-0 hover:underline font-bold">
+              Week 8
+            </Link>
+          </li>
         </ul>
       </nav>
         {children}
