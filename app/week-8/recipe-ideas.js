@@ -60,7 +60,7 @@ export default function RecipeIdeas({items}) {
     return (
       <div className="flex justify-center align-middle max-h-1/4">
       {recipe ?
-          <img src={recipeWebUrl} alt={recipe ? recipe.title : recipeWebUrl} className="h-full" /> :
+          <img src={recipeWebUrl} alt={recipe ? recipe.title : recipeWebUrl} /> :
           <p>{recipeWebUrl}</p>
       }
 
@@ -106,7 +106,7 @@ export default function RecipeIdeas({items}) {
 
 
   return (
-    <div className="bg-custom-darker-green rounded-lg flex flex-col p-8 gap-4">
+    <div className="bg-custom-darker-green rounded-lg flex flex-col p-8 gap-4 h-fit">
       <div>
         <select
           id="ingredients"

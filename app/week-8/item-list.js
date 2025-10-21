@@ -147,7 +147,7 @@ export default function ItemList() {
 
   return (
     <div className="flex flex-col md:flex-row justify-center align-middle gap-8">
-      <div className=" flex-1 flex flex-col gap-4">
+      <div className=" flex-1 flex flex-col gap-4 h-fit">
           <NewItem
           handleAddingNewItem={handleAddingItem}
           categoryList={categories}
