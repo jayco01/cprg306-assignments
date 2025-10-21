@@ -117,7 +117,6 @@ export default function ItemList() {
     }
     return acc;
   }, []);
-  // console.log("Available categories: " +categories);
 
   const categorizedItems = categories.map(category => {
     return {
@@ -125,7 +124,6 @@ export default function ItemList() {
       items: items.filter(item => item.category === category)
     };
   });
-  // console.log("Categorized items: ", categorizedItems);
 
 
   const handleCategorizedDisplay = () => {

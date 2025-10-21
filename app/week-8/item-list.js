@@ -118,7 +118,6 @@ export default function ItemList() {
     }
     return acc;
   }, []);
-  // console.log("Available categories: " +categories);
 
   const categorizedItems = categories.map(category => {
     return {
@@ -126,7 +125,6 @@ export default function ItemList() {
       items: items.filter(item => item.category === category)
     };
   });
-  // console.log("Categorized items: ", categorizedItems);
 
 
   const handleCategorizedDisplay = () => {
@@ -161,17 +159,17 @@ export default function ItemList() {
         {/* **** Buttons Section *** */}
         <div className="flex flex-col gap-4 bg-custom-darkest-green p-4 rounded-t-lg">
 
-          <div className="flex flex-col md:flex-row gap-2 w-full">
+          <div className="flex flex-col lg:flex-row gap-2 w-full ">
             <h3 className="font-extrabold">Sort by:</h3>
             <button
-              className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'}`}
+              className={`${btnStyle} ${sortBy === 'name' ? 'bg-custom-green' : 'bg-transparent'} text-font-size-fluid-0`}
               onClick={() => handleSortingItems("name")}
               disabled={sortBy === 'name'}
               value="name">
               name
             </button>
             <button
-              className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'}`}
+              className={`${btnStyle} ${sortBy === 'category' ? 'bg-custom-green' : 'bg-transparent'} text-font-size-fluid-0`}
               onClick={() => handleSortingItems("category")}
               disabled={sortBy === 'category' && !isCategorized}
               value="category">

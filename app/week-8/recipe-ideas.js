@@ -43,7 +43,6 @@ export default function RecipeIdeas({items}) {
           }
 
           const imageResponse = await response.json();
-          console.log(imageResponse);
           const imageSrc = imageResponse?.photos[0]?.src?.original;
           console.log(imageSrc);
           setRecipeWebUrl(imageSrc || "Image not found");
@@ -60,10 +59,12 @@ export default function RecipeIdeas({items}) {
   const handleRecipeImage = () => {
     return (
       <div>
-      {recipe ?
-          <img src={recipeWebUrl} alt={recipe ? recipe.title : recipeWebUrl} /> :
-          <p>{recipeWebUrl}</p>
-      }
+      {/*{recipe ?*/}
+      {/*    <img src={recipeWebUrl} alt={recipe ? recipe.title : recipeWebUrl} /> :*/}
+      {/*    <p>{recipeWebUrl}</p>*/}
+      {/*}*/}
+
+        <img src="https://images.pexels.com/photos/29266883/pexels-photo-29266883.jpeg" />
       </div>
     );
   }
