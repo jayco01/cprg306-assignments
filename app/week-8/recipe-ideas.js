@@ -107,6 +107,7 @@ export default function RecipeIdeas({items}) {
 
   return (
     <div className="bg-custom-darker-green rounded-lg flex flex-col p-8 gap-4 h-fit">
+      <h2>Meal Ideas</h2>
       <div>
         <select
           id="ingredients"

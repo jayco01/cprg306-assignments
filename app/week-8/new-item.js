@@ -95,7 +95,7 @@ export default function NewItem({ handleAddingNewItem, categoryList }) {
               <input
                 id="item-name"
                 type="text"
-                value={name}
+                value={name || undefined}
                 onChange={event => setName(event.target.value)}
                 className="text-font-size-fluid-1 max-w-3/4 bg-custom-dark-green  border-2 border-transparent  focus:border-custom-offWhite rounded-lg p-2 h-full focus:shadow-custom-dark-green focus:shadow-md"
                 required
