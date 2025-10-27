@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
           </li>
         </ul>
       </nav>
-        {children}
+      {children}
       </body>
     </html>
   );
