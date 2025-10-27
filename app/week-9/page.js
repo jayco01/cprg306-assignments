@@ -31,11 +31,14 @@ export default function Page() {
 
 // Display some of the user's information
   const renderUserInfo = () => (
-  <div>
-    <p>
+  <div className="flex flex-col justify-end">
+    <p className="text-font-size-fluid-1 font-semibold">
       Welcome, {user.displayName} ({user.email})
     </p>
-    <button onClick={singOut}>Sign Out</button>
+    <button
+    className="bg-red-900 font-semibold hover:bg-red-700 border-custom-offWhite border-2 my-4 p-2 self-end cursor-pointer"
+      onClick={singOut}>Sign Out
+    </button>
   </div>
 )
 
