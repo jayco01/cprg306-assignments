@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "encoding": "^0.1.13",
-    "firebase": "^12.4.0",
+    "firebase": "^10.14.1",
+    "firebaseui": "^6.1.0",
     "next": "15.5.3",
     "pexels": "^1.4.0",
     "react": "19.1.0",
