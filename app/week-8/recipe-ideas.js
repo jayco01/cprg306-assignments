@@ -4,6 +4,10 @@ import {useEffect, useState} from "react";
 
 export default function RecipeIdeas({items}) {
 
+  /**
+   * TheMealDB.com was not available during the implementation of week-8 assignment
+   * I will update week-9 to use TheMealDB.com API
+   */
   const apiBaseUrl = process.env.NEXT_PUBLIC_RECIPE_API_BASE_URL;
   const apiKeyRaw = process.env.NEXT_PUBLIC_RECIPE_API_KEY;
   const recipeApiKey = apiKeyRaw.replace(/^['"]+|['"]+$/g, '');
