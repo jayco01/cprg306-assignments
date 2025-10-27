@@ -23,7 +23,6 @@ export default function NewItem({ handleAddingNewItem, categoryList }) {
       setQuantity(quantity + 1);
       setHasError(false);
     } else {
-      console.log(hasError + " error test");
       setHasError(true);
     }
   }
@@ -34,7 +33,6 @@ export default function NewItem({ handleAddingNewItem, categoryList }) {
       setQuantity(quantity - 1);
       setHasError(false);
     } else {
-      console.log(hasError + " error test");
       setHasError(true);
     }
   }
