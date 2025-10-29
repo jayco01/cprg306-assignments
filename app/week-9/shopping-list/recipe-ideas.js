@@ -12,6 +12,24 @@ function isolateName(item) {
   return ingredient.trim();
 }
 
+function getIngredientsList(meal) {
+  const ingredients = [];
+
+  // limit to 20 ingredients and measures
+  for (let i = 1; i <= 20; i++) {
+    const ingredient = meal[`strIngredient${i}`];
+    const measure = meal[`strMeasure${i}`];
+
+    if (!ingredient) {
+      break;
+    }
+
+    ingredients.push(`${measure} ${ingredient}`);
+  }
+
+  return ingredients;
+}
+
 export default function RecipeIdeas({ items }) {
 
   // Clean the base URL once
@@ -124,6 +142,8 @@ export default function RecipeIdeas({ items }) {
             );
           }
 
+          const ingredients = details ? getIngredientsList(details) : [];
+
           return (
             <details key={recipe.idMeal}>
               <summary>{recipe.strMeal}</summary>
@@ -134,11 +154,25 @@ export default function RecipeIdeas({ items }) {
                   width="400"
                   height="400"
                   loading="lazy"
-                  className="my-2"
                 />
               )}
-              {details.strInstructions && (
-                <p className="mt-2 whitespace-pre-line">{details.strInstructions}</p>
+
+              {ingredients.length > 0 && (
+                <div className="mt-2">
+                  <h4 className="font-semibold">Ingredients:</h4>
+                  <ul className="list-disc list-inside">
+                    {ingredients.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {details?.strInstructions && (
+                <div className="mt-4">
+                  <h4 className="font-semibold">Instructions:</h4>
+                  <p className="whitespace-pre-line">{details.strInstructions}</p>
+                </div>
               )}
             </details>
           );
