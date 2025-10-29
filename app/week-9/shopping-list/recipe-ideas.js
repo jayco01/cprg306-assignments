@@ -1,7 +1,7 @@
 'use client'
 
 import {useEffect, useState} from "react";
-import Image from "next/image";
+
 
 export default function RecipeIdeas({items}) {
 
@@ -11,6 +11,7 @@ export default function RecipeIdeas({items}) {
   const recipeUrlParam = "lookup.php?i=";
 
   const [recipeArray, setRecipeArray] = useState([]);
+  const [recipeInfo, setRecipeInfo] = useState([]);
   const [choseMealId, setChoseMealId] = useState(null);
 
   // const [recipeWebUrl, setRecipeWebUrl] = useState('Please select an ingredient to display a Recipe Idea.');
@@ -27,36 +28,54 @@ export default function RecipeIdeas({items}) {
         throw new Error(`Could not find ${ingredient}, ${response.status} ${response.statusText}`);
       }
 
-      const recipeResponse = await response.json();
-
-      if (!recipeResponse || recipeResponse.meals == null) {
-        // setRecipeWebUrl("No Recipe found with " + ingredient + " as the main ingredient");
-        console.log("No Recipe found with " + ingredient + " as the main ingredient");
+      const data = await response.json();
+      if (!data || data.meals == null) {
+        setRecipeArray([]);
+        setRecipeInfo([]);
         return;
       }
 
-      setRecipeArray(recipeResponse?.meals);
+      setRecipeArray(data.meals);
       console.log(recipeResponse);
-      // recipeResponse?.meals[0]?.strMeal
-      //
-      // const imageUrl = recipeResponse?.meals[0]?.strMealThumb;
-      // setRecipeWebUrl(imageUrl.replace(/^['"]+|['"]+$/g, ''));
-      //
-      // const mealId = recipeResponse?.meals[0]?.idMeal;
-      // console.log("mealId",mealId);
 
     } catch (error) {
       console.log(error);
     }
   }
 
-  const handleRecipeImage = () => {
-    return (
-      <div className="flex justify-center align-middle max-h-1/4">
+  useEffect(() => {
+    if (!recipeArray.length) {
+      setRecipeInfo([]);
+      return;
+    }
 
-      </div>
-    );
-  }
+    const fetchRecipeInfo = async () => {
+      try {
+        const details = await Promise.all(
+          recipeArray.map(async (recipe) => {
+            const url = `${mealDbUrl}${recipeUrlParam}${encodeURIComponent(recipe.idMeal)}`;
+
+            const response = await fetch(url);
+
+            if (!response.ok) {
+              throw new Error('Unable to fetch recipe.')
+            };
+
+            const json = await response.json();
+
+            return json.meals?.[0];
+          })
+        );
+        setRecipeInfo(details);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchRecipeInfo();
+  }, [recipeArray, mealDbUrl]);
+
+
 
   function isolateName(item) {
     let ingredient = item.split(/[,]+/);
@@ -88,22 +107,27 @@ export default function RecipeIdeas({items}) {
           ))}
         </select>
       </div>
-      {handleRecipeImage()}
       <div className="p-8">
-        {recipeArray ? (
-          recipeArray.map(recipe => (
+        {recipeArray.map((recipe, index) => {
+          const details = recipeInfo[index];
+          return (
             <details key={recipe.idMeal}>
               <summary>{recipe.strMeal}</summary>
-              <img
-                src={recipe.strMealThumb}
-                alt={recipe.strMeal}
-                loading="lazy"
-              />
+              {recipe.strMealThumb && (
+                <img
+                  src={recipe.strMealThumb}
+                  alt={recipe.strMeal}
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                />
+              )}
+              {details?.strInstructions && (
+                <p className="mt-2 whitespace-pre-line">{details.strInstructions}</p>
+              )}
             </details>
-          ))
-
-
-        ) : null}
+          );
+        })}
       </div>
     </div>
   )
