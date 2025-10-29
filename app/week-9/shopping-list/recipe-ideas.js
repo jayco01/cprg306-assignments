@@ -1,96 +1,69 @@
 'use client'
 
 import {useEffect, useState} from "react";
+import Image from "next/image";
 
 export default function RecipeIdeas({items}) {
 
-  const apiBaseUrl = process.env.NEXT_PUBLIC_RECIPE_API_BASE_URL;
-  const apiKeyRaw = process.env.NEXT_PUBLIC_RECIPE_API_KEY;
-  const recipeApiKey = apiKeyRaw.replace(/^['"]+|['"]+$/g, '');
-
-  const apiImageUrl = process.env.NEXT_PUBLIC_IMAGE_API_BASE_URL;
-  const apiUrlParams = process.env.NEXT_PUBLIC_IMAGE_API_PARAMETERS;
-  const imageApiKeyRaw = process.env.NEXT_PUBLIC_IMAGE_API_KEY;
-  const imageApiKey = imageApiKeyRaw.replace(/^['"]+|['"]+$/g, '');
-
-
-  const [recipe, setRecipe] = useState(null);
+  const [recipeName, setRecipeName] = useState(null);
   const [instruction, setInstruction] = useState([]);
   const [recipeWebUrl, setRecipeWebUrl] = useState('Please select an ingredient to display a Recipe Idea.');
 
+  const mealDbUrlRaw = process.env.NEXT_PUBLIC_MEALDB_BASE_URL;
+  const mealDbUrl =  mealDbUrlRaw.replace(/^['"]+|['"]+$/g, '');
+  const imageUrlParam = "filter.php?i=";
+  const recipeUrlParam = "lookup.php?i=";
 
 
-  console.log(imageApiKey);
+  // console.log(mealDbUrl);
 
-  useEffect(() => {
-    const fetchRecipeImage = async () => {
-      if (recipe) {
-        let query = encodeURIComponent(recipe.title);
-        let url = `${apiImageUrl}${query}${apiUrlParams}`;
-        console.log(url);
-
-        try{
-          const imageRequestOptions = {
-            method: 'GET',
-            headers: { 'Authorization': imageApiKey,'Content-Type': 'application/json'}
-          };
-          const response = await fetch(url,imageRequestOptions);
-
-          if (!response.ok) {
-            console.log(response.status);
-            console.log(response.statusText);
-            return;
-          }
-
-          const imageResponse = await response.json();
-          const imageSrc = imageResponse?.photos[0]?.src?.original;
-          console.log(imageSrc);
-          setRecipeWebUrl(imageSrc || "Image not found");
-
-        } catch(error) {
-          console.log(error);
-        }
-      }
-    }
-    fetchRecipeImage();
-  }, [apiUrlParams, recipe, apiImageUrl, imageApiKey]);
-
-
-  const handleRecipeImage = () => {
-    return (
-      <div className="flex justify-center align-middle max-h-1/4">
-      {recipe ?
-          <img src={recipeWebUrl} alt={recipe ? recipe.title : recipeWebUrl} /> :
-          <p>{recipeWebUrl}</p>
-      }
-
-      </div>
-    );
-  }
-
-
-  const ingredientsRequestOptions = {
-    method: 'GET',
-    headers: { 'X-Api-Key': recipeApiKey},
-    contentType: 'application/json'
-  };
 
   const handleGettingRecipe = async (item) => {
     let ingredient = isolateName(item.target.value);
-    const url = `${apiBaseUrl}${encodeURIComponent(ingredient)}`;
+    const url = `${mealDbUrl}${imageUrlParam}${encodeURIComponent(ingredient)}`;
+    // console.log(url);
 
     try {
-      const response = await fetch(url, ingredientsRequestOptions);
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error(`Could not find ${ingredient}, ${response.status} ${response.statusText}`);
       }
+
       const recipeResponse = await response.json();
-      setRecipe(Array.isArray(recipeResponse) ? recipeResponse[0] : recipeResponse);
-      instructionsToArray(recipeResponse[0].instructions);
+
+      if (!recipeResponse || recipeResponse.meals == null) {
+        setRecipeWebUrl("No Recipe found with " + ingredient + " as the main ingredient");
+        console.log("No Recipe found with " + ingredient + " as the main ingredient");
+        return;
+      }
+
+      setRecipeName(recipeResponse?.meals[0]?.strMeal);
+
+      const imageUrl = recipeResponse?.meals[0]?.strMealThumb;
+      setRecipeWebUrl(imageUrl.replace(/^['"]+|['"]+$/g, ''));
+
+      const mealId = recipeResponse?.meals[0]?.idMeal;
+      console.log("mealId",mealId);
+
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const handleRecipeImage = () => {
+    return (
+      <div className="flex justify-center align-middle max-h-1/4">
+        {recipeName ?
+          <img
+            src={recipeWebUrl}
+            alt={recipeName ? recipeName : recipeWebUrl}
+          /> :
+          <p>{recipeWebUrl}</p>
+        }
+
+      </div>
+    );
   }
 
   function isolateName(item) {
@@ -125,16 +98,16 @@ export default function RecipeIdeas({items}) {
       </div>
       {handleRecipeImage()}
       <div className="p-8">
-        {recipe ? (
+        {recipeName ? (
           <div>
-            <h3 className="mt-4 font-bold">{recipe.title}</h3>
-            <p className="underline">{recipe.servings}</p>
+            <h3 className="mt-4 font-bold">{recipeName.title}</h3>
+            <p className="underline">{recipeName.servings}</p>
 
             <h4 className="mt-4 font-semibold">Ingredients</h4>
             <ol className="list-disc list-inside">
-              {Array.isArray(recipe.ingredients) ? recipe.ingredients.map((ing) => (
+              {Array.isArray(recipeName.ingredients) ? recipeName.ingredients.map((ing) => (
                 <li key={ing}>{ing}</li>
-              )) : <li>{String(recipe.ingredients)}</li>}
+              )) : <li>{String(recipeName.ingredients)}</li>}
             </ol>
 
             <h4 className="mt-4 font-semibold">Instructions</h4>
