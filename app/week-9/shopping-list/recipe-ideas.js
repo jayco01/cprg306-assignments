@@ -1,48 +1,58 @@
 'use client'
 
-import {useEffect, useState} from "react";
+import { useEffect, useState, useMemo } from "react";
+
+const IMAGE_URL_PARAM = "filter.php?i=";
+const RECIPE_URL_PARAM = "lookup.php?i=";
 
 
-export default function RecipeIdeas({items}) {
+function isolateName(item) {
+  let ingredient = item.split(/[,]+/);
+  ingredient = ingredient[0].replace(/\p{Emoji}/gu, '');
+  return ingredient.trim();
+}
 
-  const mealDbUrlRaw = process.env.NEXT_PUBLIC_MEALDB_BASE_URL;
-  const mealDbUrl =  mealDbUrlRaw.replace(/^['"]+|['"]+$/g, '');
-  const imageUrlParam = "filter.php?i=";
-  const recipeUrlParam = "lookup.php?i=";
+export default function RecipeIdeas({ items }) {
+
+  // Clean the base URL once
+  const mealDbUrl = useMemo(() => {
+    const mealDbUrlRaw = process.env.NEXT_PUBLIC_MEALDB_BASE_URL || '';
+    return mealDbUrlRaw.replace(/^['"]+|['"]+$/g, '');
+  }, []);
 
   const [recipeArray, setRecipeArray] = useState([]);
   const [recipeInfo, setRecipeInfo] = useState([]);
-  const [choseMealId, setChoseMealId] = useState(null);
 
-  // const [recipeWebUrl, setRecipeWebUrl] = useState('Please select an ingredient to display a Recipe Idea.');
+  /**
+   * Fetches a list of meals based on a selected ingredient.
+   */
+  const handleGettingAllRecipes = async (event) => {
+    const ingredient = isolateName(event.target.value);
+    const url = `${mealDbUrl}${IMAGE_URL_PARAM}${encodeURIComponent(ingredient)}`;
 
-
-  const handleGettingAllRecipes = async (item) => {
-    let ingredient = isolateName(item.target.value);
-    const url = `${mealDbUrl}${imageUrlParam}${encodeURIComponent(ingredient)}`;
+    setRecipeArray([]);
+    setRecipeInfo([]);
 
     try {
       const response = await fetch(url);
-
       if (!response.ok) {
         throw new Error(`Could not find ${ingredient}, ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      if (!data || data.meals == null) {
-        setRecipeArray([]);
-        setRecipeInfo([]);
-        return;
-      }
 
-      setRecipeArray(data.meals);
-      console.log(recipeResponse);
+      setRecipeArray(data?.meals || []);
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      // Ensure state is clear on error
+      setRecipeArray([]);
     }
   }
 
+  /**
+   *fetch detailed recipe information whenever the list of recipes (recipeArray) changes
+   */
   useEffect(() => {
     if (!recipeArray.length) {
       setRecipeInfo([]);
@@ -51,42 +61,37 @@ export default function RecipeIdeas({items}) {
 
     const fetchRecipeInfo = async () => {
       try {
+        // get all details all at once or fail
         const details = await Promise.all(
           recipeArray.map(async (recipe) => {
-            const url = `${mealDbUrl}${recipeUrlParam}${encodeURIComponent(recipe.idMeal)}`;
-
+            const url = `${mealDbUrl}${RECIPE_URL_PARAM}${encodeURIComponent(recipe.idMeal)}`;
             const response = await fetch(url);
 
             if (!response.ok) {
-              throw new Error('Unable to fetch recipe.')
-            };
+              throw new Error(`Unable to fetch recipe details for ${recipe.idMeal}`);
+            }
 
             const json = await response.json();
-
+            // Return the first meal from the details response
             return json.meals?.[0];
           })
         );
-        setRecipeInfo(details);
+        setRecipeInfo(details.filter(Boolean));
       } catch (e) {
         console.error(e);
+        setRecipeInfo([]);
       }
     };
 
     fetchRecipeInfo();
+
   }, [recipeArray, mealDbUrl]);
 
-
-
-  function isolateName(item) {
-    let ingredient = item.split(/[,]+/);
-    ingredient = ingredient[0].replace(/\p{Emoji}/gu, '')
-    return ingredient.trim();
-  }
-
-  const instructionsToArray = (instructions) => {
-      setInstruction(instructions.split(". "));
-  }
-
+  // filter only when the item array change
+  // i.e. when a new item is added to the list
+  const filteredItems = useMemo(() => {
+    return items.filter(i => i.category.toLowerCase() !== 'household');
+  }, [items]);
 
 
   return (
@@ -99,8 +104,8 @@ export default function RecipeIdeas({items}) {
           onChange={handleGettingAllRecipes}
           defaultValue=""
         >
-          <option key="label" value="" className="text-custom-offWhite" disabled>Select an ingredient</option>
-          {items.filter(i => i.category.toLowerCase() !== 'household').map((item) => (
+          <option value="" disabled>Select an ingredient</option>
+          {filteredItems.map((item) => (
             <option key={item.id} value={item.name}>
               {item.name}
             </option>
@@ -108,8 +113,17 @@ export default function RecipeIdeas({items}) {
         </select>
       </div>
       <div className="p-8">
+        {/* Map over recipeArray and use index to get corresponding details */}
         {recipeArray.map((recipe, index) => {
           const details = recipeInfo[index];
+          if (!details) {
+            return (
+              <details key={recipe.idMeal}>
+                <summary>{recipe.strMeal} (Loading...)</summary>
+              </details>
+            );
+          }
+
           return (
             <details key={recipe.idMeal}>
               <summary>{recipe.strMeal}</summary>
@@ -120,9 +134,10 @@ export default function RecipeIdeas({items}) {
                   width="400"
                   height="400"
                   loading="lazy"
+                  className="my-2"
                 />
               )}
-              {details?.strInstructions && (
+              {details.strInstructions && (
                 <p className="mt-2 whitespace-pre-line">{details.strInstructions}</p>
               )}
             </details>
