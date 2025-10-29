@@ -40,6 +40,7 @@ export default function RecipeIdeas({ items }) {
 
   const [recipeArray, setRecipeArray] = useState([]);
   const [recipeInfo, setRecipeInfo] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   /**
    * Fetches a list of meals based on a selected ingredient.
@@ -50,6 +51,7 @@ export default function RecipeIdeas({ items }) {
 
     setRecipeArray([]);
     setRecipeInfo([]);
+    setHasSearched(true);
 
     try {
       const response = await fetch(url);
@@ -131,6 +133,10 @@ export default function RecipeIdeas({ items }) {
         </select>
       </div>
       <div className="p-8">
+        {hasSearched && recipeArray.length === 0 && (
+          <p className="text-font-size-fluid-1 text-custom-offWhite font-semibold">No recipes found for that ingredient.</p>
+        )}
+
         {/* Map over recipeArray and use index to get corresponding details */}
         {recipeArray.map((recipe, index) => {
           const details = recipeInfo[index];
