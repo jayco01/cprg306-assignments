@@ -147,14 +147,14 @@ export default function ItemList() {
 
   return (
     <div className="flex flex-col md:flex-row justify-center align-middle gap-8">
-      <div className=" flex-1 flex flex-col gap-4 h-fit">
+      <div className=" flex-2 flex flex-col gap-4 h-fit">
           <NewItem
           handleAddingNewItem={handleAddingItem}
           categoryList={categories}
         />
         <RecipeIdeas items={items}/>
       </div>
-      <div className="flex-1 bg-custom-green rounded-lg flex flex-col p-8">
+      <div className="flex-1 bg-custom-darker-green rounded-lg flex flex-col p-8">
 
         {/* **** Buttons Section *** */}
         <div className="flex flex-col gap-4 bg-custom-darkest-green p-4 rounded-t-lg">
@@ -194,7 +194,7 @@ export default function ItemList() {
 
         {/* ****List section*** */}
         {(!isCategorized) ?
-          <ul className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
+          <ul className="flex flex-col gap-4 font-semibold bg-custom-green rounded-b-lg p-4">
             {/* Display regular list */}
             {items.map((item) => (
               <Item
@@ -211,7 +211,7 @@ export default function ItemList() {
 
           :
 
-          <div className="flex flex-col gap-4 font-semibold bg-custom-darker-green rounded-b-lg p-4">
+          <div className="flex flex-col gap-4 font-semibold bg-custom-green rounded-b-lg p-4">
             {/* Display List in Sub-categories */}
             {categorizedItems.map((catItem) => (
               <div key={catItem.category}>

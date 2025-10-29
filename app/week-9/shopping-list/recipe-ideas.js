@@ -145,8 +145,8 @@ export default function RecipeIdeas({ items }) {
           const ingredients = details ? getIngredientsList(details) : [];
 
           return (
-            <details key={recipe.idMeal}>
-              <summary>{recipe.strMeal}</summary>
+            <details key={recipe.idMeal} className="p-2 border-custom-offWhite border-2 rounded-lg my-2">
+              <summary className="text-font-size-fluid-1">{recipe.strMeal}</summary>
               {recipe.strMealThumb && (
                 <img
                   src={recipe.strMealThumb}
