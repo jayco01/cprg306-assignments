@@ -5,6 +5,7 @@ import ShoppingListManager from "@/app/week-10/shopping-list/shopping-list-manag
 import gitHubIcon from "../../public/github-mark/github-mark-white.svg"
 import Image from "next/image";
 
+
 export default function Page() {
   // Use the useUserAuth hook to get the user object and the login and logout functions
   const {user, gitHubSignIn, firebaseSignOut} = useUserAuth();
@@ -28,6 +29,7 @@ export default function Page() {
       console.error(e.message);
     }
   }
+
 
 // Display some of the user's information
   const renderUserInfo = () => (

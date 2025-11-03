@@ -1,9 +1,11 @@
 'use client'
 
 import Item from "@/app/week-10/shopping-list/item";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import NewItem from "@/app/week-10/shopping-list/new-item";
 import RecipeIdeas from "@/app/week-10/shopping-list/recipe-ideas";
+import {getItems, addItem} from "@/app/week-10/_services/shopping-list-service"
+import { useUserAuth } from "../_utils/auth-context";
 
 export default function ItemList() {
 
@@ -12,81 +14,25 @@ export default function ItemList() {
   const [isCategorized, setIsCategorized] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
   const [displayCategoryBtnError, setDisplayCategoryBtnError] = useState("hidden");
+  const [items, setItems] = useState( []);
+  const {user} = useUserAuth();
 
-  const [items, setItems] = useState( [
-    {
-      "id": "1h2GJKH12gkHG31h1H",
-      "name": "milk, 4 L 🥛",
-      "quantity": 1,
-      "category": "dairy"
-    },
-    {
-      "id": "2KJH3k2j3H1k2J3K1H",
-      "name": "bread 🍞",
-      "quantity": 2,
-      "category": "bakery"
-    },
-    {
-      "id": "3h2KJH3k2j3H1k2J3",
-      "name": "eggs, dozen 🥚",
-      "quantity": 2,
-      "category": "dairy"
-    },
-    {
-      "id": "4k2J3K1H2GJKH12gk",
-      "name": "bananas 🍌",
-      "quantity": 6,
-      "category": "produce"
-    },
-    {
-      "id": "5H1h1H2KJH3k2j3H",
-      "name": "broccoli 🥦",
-      "quantity": 3,
-      "category": "produce"
-    },
-    {
-      "id": "6H1k2J3K1H2GJKH1",
-      "name": "chicken breasts, 1 kg 🍗",
-      "quantity": 1,
-      "category": "meat"
-    },
-    {
-      "id": "7gkHG31h1H2KJH3k",
-      "name": "pasta sauce 🍝",
-      "quantity": 3,
-      "category": "canned goods"
-    },
-    {
-      "id": "8j3H1k2J3K1H2GJK",
-      "name": "spaghetti, 454 g 🍝",
-      "quantity": 2,
-      "category": "dry goods"
-    },
-    {
-      "id": "9H12gkHG31h1H2KJ",
-      "name": "toilet paper, 12 pack 🧻",
-      "quantity": 1,
-      "category": "household"
-    },
-    {
-      "id": "10H3k2j3H1k2J3K1",
-      "name": "paper towels, 6 pack",
-      "quantity": 1,
-      "category": "household"
-    },
-    {
-      "id": "11k2J3K1H2GJKH12",
-      "name": "dish soap 🍽️",
-      "quantity": 1,
-      "category": "household"
-    },
-    {
-      "id": "12GJKH12gkHG31h1",
-      "name": "hand soap 🧼",
-      "quantity": 4,
-      "category": "household"
+  const loadItems = async () => {
+    if(user) {
+      try{
+        const itemsFromDB = await getItems(user.id);
+
+        const returnedItemsFromDB = itemsFromDB.map((item) => ({
+          id: item.id,
+          ...item.data
+        }));
+
+        setItems(returnedItemsFromDB);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  ]);
+  }
 
   const handleSortingItems = (newSortBy) => {
     if(isCategorized) {
