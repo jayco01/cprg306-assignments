@@ -17,6 +17,20 @@ export default function ItemList() {
   const [items, setItems] = useState( []);
   const {user} = useUserAuth();
 
+  const COMMON_CATEGORIES = [
+    "Produce",
+    "Dairy",
+    "Bakery",
+    "Meat",
+    "Frozen",
+    "Canned Goods",
+    "Dry Goods",
+    "Beverages",
+    "Snacks",
+    "Household",
+    "Other"
+  ];
+
   const loadItems = async () => {
     if(user) {
       try{
@@ -111,7 +125,7 @@ export default function ItemList() {
       <div className=" flex-2 flex flex-col gap-4 h-fit">
           <NewItem
           handleAddingNewItem={handleAddingItem}
-          categoryList={categories}
+          categoryList={COMMON_CATEGORIES}
         />
         <RecipeIdeas items={items}/>
       </div>
