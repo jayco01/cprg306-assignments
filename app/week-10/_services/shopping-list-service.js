@@ -15,3 +15,9 @@ const getItems = async (userId) => {
   });
   return itemArr;
 }
+
+const addItem = async (userId, item) => {
+  const docRef = await addDoc(userId, item);
+
+  return docRef.id;
+}
