@@ -29,10 +29,14 @@ export default function ItemList() {
 
         setItems(returnedItemsFromDB);
       } catch (error) {
-        console.log(error);
+        console.log("Load item error: ", error);
       }
     }
   }
+
+  useEffect(() => {
+    loadItems();
+  }, [user]);
 
   const handleSortingItems = (newSortBy) => {
     if(isCategorized) {
@@ -52,9 +56,20 @@ export default function ItemList() {
     }));
   };
 
-  const handleAddingItem = (newItem) => {
-    if(newItem !== null) {
-      setItems([...items, newItem]);
+  const handleAddingItem = async (newItem) => {
+    if(user && newItem !== null) {
+      try {
+        // remove the client-side 'id'  because Firestore will generate the permanent one.
+        const { id, ...itemToSave } = newItem;
+
+        const newItemId = await addItem(user.uid, itemToSave);
+
+        // set state using the given Firestore ID
+        setItems([...items, { id: newItemId, ...itemToSave }]);
+
+      } catch (error) {
+        console.error("Error adding item:", error);
+      }
     }
   }
 
